@@ -5,9 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import static sean.yu.tank.Direction.*;
 
@@ -68,16 +66,32 @@ public class TankFrame extends Frame {
         g.drawImage(offScreenImage, 0, 0, null);
     }
 
+    //绘制游戏实时画面
     @Override
     public void paint(Graphics g) {
+        //绘制游戏信息
+        Color c = g.getColor();
+        g.setColor(Color.white);
+        g.drawString(String.format("子弹数量: %s ", bullets.size()),10,60);
+        g.drawString(String.format("敌人数量: %s ", tanks.size()),10,80);
+        g.setColor(c);
+        //绘制主战坦克
         myTank.paint(g);
 
+        //绘制子弹
         for (int i = 0 ; i < bullets.size() ; i++) {
             bullets.get(i).paint(g);
         }
 
+        //绘制敌人
         for (int i = 0; i < tanks.size(); i++) {
             tanks.get(i).paint(g);
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j< tanks.size(); j++) {
+                bullets.get(i).collideWith(tanks.get(j));
+            }
         }
     }
 

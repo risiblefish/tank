@@ -20,15 +20,22 @@ public class Bullet {
     private int y;
     private Direction dir;
     private TankFrame tf;
+    private boolean alive;
 
     public Bullet(int x, int y, Direction dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.alive = true;
     }
 
     public void paint(Graphics g) {
+        //如果死了，就不绘制
+        if(isDead()) {
+            tf.bullets.remove(this);
+            return;
+        }
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourceManager.bulletL, x, y, null);
@@ -63,17 +70,29 @@ public class Bullet {
             default:
                 break;
         }
-        updateLifeState();
-    }
-
-    private void updateLifeState() {
-        if (isDead()) {
-            System.out.println("bullet is dead");
+        if(isDead()) {
             tf.bullets.remove(this);
         }
     }
 
     private boolean isDead() {
-        return  (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT);
+                //子弹超出边界
+        return  (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
+                //或者子弹与其他物体发生碰撞导致死亡
+                || !alive;
+    }
+
+    public void collideWith(Tank tank) {
+        Rectangle bulletRect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+        Rectangle tankRect = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        //判断2个矩形是否相交
+        if (bulletRect.intersects(tankRect)) {
+            this.die();
+            tank.die();
+        }
+    }
+
+    private void die() {
+        this.alive = false;
     }
 }

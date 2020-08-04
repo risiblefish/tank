@@ -16,6 +16,17 @@ public class Tank {
 
     private int x;
     private int y;
+    private boolean alive;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+
     private static final int SPEED = 5;
     private Direction dir;
     boolean moving = false;
@@ -26,9 +37,14 @@ public class Tank {
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.alive = true;
     }
 
     public void paint(Graphics g) {
+        if (!alive) {
+            tf.tanks.remove(this);
+            return;
+        }
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourceManager.tankL, x, y, null);
@@ -86,5 +102,9 @@ public class Tank {
         int bx = x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int by = y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
         this.tf.bullets.add(new Bullet(bx, by, dir, this.tf));
+    }
+
+    public void die() {
+        this.alive = false;
     }
 }
