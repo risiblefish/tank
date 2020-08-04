@@ -15,7 +15,7 @@ public class Tank {
     private static final int SPEED = 5;
     private Direction dir;
     boolean moving = false;
-    private TankFrame tf = null;
+    private TankFrame tf;
 
     public Tank(int x, int y, Direction dir, TankFrame tf) {
         this.x = x;
@@ -25,11 +25,21 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        Color og = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, 50, 50);
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourceManager.tankL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceManager.tankR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceManager.tankU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceManager.tankD, x, y, null);
+                break;
+        }
         move();
-        g.setColor(og);
     }
 
     private void move() {
