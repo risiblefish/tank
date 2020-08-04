@@ -10,8 +10,12 @@ import java.awt.*;
  **/
 
 public class Bullet {
+    //public properties
+    public static final int WIDTH = ResourceManager.bulletD.getWidth();
+    public static final int HEIGHT = ResourceManager.bulletD.getHeight();
+
+    //private properties
     private static final int SPEED = 10;
-    private static final int WIDTH = 5, HEIGHT = 5;
     private int x;
     private int y;
     private Direction dir;

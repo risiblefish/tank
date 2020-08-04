@@ -10,6 +10,10 @@ import java.awt.*;
  **/
 
 public class Tank {
+    //public properties
+    public static final int WIDTH = ResourceManager.tankD.getWidth();
+    public static final int HEIGHT = ResourceManager.tankD.getHeight();
+
     private int x;
     private int y;
     private static final int SPEED = 5;
@@ -78,6 +82,9 @@ public class Tank {
 
     //思考： 这里如何把frame的子弹传给tank对象？
     public void fire() {
-        this.tf.bullets.add(new Bullet(x, y, dir, this.tf));
+        //计算子弹的初始位置
+        int bx = x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int by = y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
+        this.tf.bullets.add(new Bullet(bx, by, dir, this.tf));
     }
 }
