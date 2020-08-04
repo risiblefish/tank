@@ -22,11 +22,13 @@ public class TankFrame extends Frame {
     Tank myTank;
     LinkedList<Bullet> bullets;
     LinkedList<Tank> tanks;
+    Explode e;
 
 
     public TankFrame() throws HeadlessException {
         bullets = new LinkedList();
         tanks = new LinkedList();
+        e = new Explode(100, 100, this);
         myTank = new Tank(200, 400, Direction.DOWN, this, GOOD);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
@@ -96,6 +98,9 @@ public class TankFrame extends Frame {
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
+
+        //绘制爆炸
+        e.paint(g);
     }
 
     /**

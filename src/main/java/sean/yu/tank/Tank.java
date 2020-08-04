@@ -3,9 +3,6 @@ package sean.yu.tank;
 import java.awt.*;
 import java.util.Random;
 
-import static sean.yu.tank.Group.BAD;
-import static sean.yu.tank.Group.GOOD;
-
 /**
  * @program: tank
  * @description:
@@ -49,10 +46,6 @@ public class Tank {
 
     public Group getGroup() {
         return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
     }
 
     //methods
@@ -99,7 +92,7 @@ public class Tank {
                 break;
         }
 
-        if(RANDOM.nextInt(10) > 8) {
+        if(RANDOM.nextInt(10) > 8 && this.group == Group.BAD) {
             this.fire();
         }
     }
@@ -122,6 +115,4 @@ public class Tank {
     public void die() {
         this.alive = false;
     }
-
-
 }
