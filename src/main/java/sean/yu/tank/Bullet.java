@@ -2,6 +2,9 @@ package sean.yu.tank;
 
 import java.awt.*;
 
+import static sean.yu.tank.Direction.DOWN;
+import static sean.yu.tank.Group.BAD;
+
 /**
  * @program: tank
  * @description:
@@ -14,22 +17,35 @@ public class Bullet {
     public static final int WIDTH = ResourceManager.bulletD.getWidth();
     public static final int HEIGHT = ResourceManager.bulletD.getHeight();
 
-    //private properties
+    //private final constants properties
     private static final int SPEED = 10;
+
+    //private properties
     private int x;
     private int y;
     private Direction dir;
     private TankFrame tf;
-    private boolean alive;
+    private boolean alive = true;
+    private Group group;
 
-    public Bullet(int x, int y, Direction dir, TankFrame tf) {
+    public Bullet(int x, int y, Direction dir, TankFrame tf, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
-        this.alive = true;
+        this.group = group;
     }
 
+    //getters and setters
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    //methods
     public void paint(Graphics g) {
         //如果死了，就不绘制
         if(isDead()) {
@@ -82,7 +98,16 @@ public class Bullet {
                 || !alive;
     }
 
+    /**
+     * 碰撞检测，这里设置为不开启同阵营伤害
+     * @param tank
+     */
     public void collideWith(Tank tank) {
+        //如果为同阵营，则不产生伤害
+        if(this.group == tank.getGroup()) {
+            return;
+        }
+        //TODO : 只用2个矩形来分别记录,而不是每次都new
         Rectangle bulletRect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
         Rectangle tankRect = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         //判断2个矩形是否相交

@@ -10,7 +10,6 @@ import java.io.IOException;
  * @author: Unuts
  * @create: 2020-08-04 06:47
  **/
-
 public class ResourceManager {
     public static BufferedImage
             tankL, tankR, tankU, tankD,

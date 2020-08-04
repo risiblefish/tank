@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 
 import static sean.yu.tank.Direction.*;
+import static sean.yu.tank.Group.GOOD;
 
 /**
  * @program: tank
@@ -26,7 +27,7 @@ public class TankFrame extends Frame {
     public TankFrame() throws HeadlessException {
         bullets = new LinkedList();
         tanks = new LinkedList();
-        myTank = new Tank(200, 400, Direction.DOWN, this);
+        myTank = new Tank(200, 400, Direction.DOWN, this, GOOD);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         addKeyListener(new TankKeyListener());
@@ -41,6 +42,7 @@ public class TankFrame extends Frame {
     }
 
     Image offScreenImage = null;
+
     /**
      * 设置双缓冲防止屏幕刷新导致的闪烁
      * <p>
@@ -50,8 +52,8 @@ public class TankFrame extends Frame {
      * 最后用drawImage将缓存中的图一次性画出
      * 即Paint是边画边填充，update是一次性画到缓存里，然后再从缓存中一次性画出来
      *
-     * @param g
-//     */
+     * @param g //
+     */
     @Override
     public void update(Graphics g) {
         if (offScreenImage == null) {
@@ -72,14 +74,14 @@ public class TankFrame extends Frame {
         //绘制游戏信息
         Color c = g.getColor();
         g.setColor(Color.white);
-        g.drawString(String.format("子弹数量: %s ", bullets.size()),10,60);
-        g.drawString(String.format("敌人数量: %s ", tanks.size()),10,80);
+        g.drawString(String.format("子弹数量: %s ", bullets.size()), 10, 60);
+        g.drawString(String.format("敌人数量: %s ", tanks.size()), 10, 80);
         g.setColor(c);
         //绘制主战坦克
         myTank.paint(g);
 
         //绘制子弹
-        for (int i = 0 ; i < bullets.size() ; i++) {
+        for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
         }
 
@@ -88,16 +90,16 @@ public class TankFrame extends Frame {
             tanks.get(i).paint(g);
         }
 
+        //每次绘制时对每颗子弹和坦克进行碰撞检测
         for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j< tanks.size(); j++) {
+            for (int j = 0; j < tanks.size(); j++) {
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
     }
 
-
     /**
-     * 这个类专门处理对键盘的监听
+     * 处理对键盘的监听
      */
     class TankKeyListener extends KeyAdapter {
         boolean bL = false;
@@ -180,6 +182,4 @@ public class TankFrame extends Frame {
             }
         }
     }
-
-
 }

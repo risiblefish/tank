@@ -1,6 +1,10 @@
 package sean.yu.tank;
 
 import java.awt.*;
+import java.util.Random;
+
+import static sean.yu.tank.Group.BAD;
+import static sean.yu.tank.Group.GOOD;
 
 /**
  * @program: tank
@@ -8,16 +12,33 @@ import java.awt.*;
  * @author: Unuts
  * @create: 2020-08-03 20:49
  **/
-
 public class Tank {
     //public properties
     public static final int WIDTH = ResourceManager.tankD.getWidth();
     public static final int HEIGHT = ResourceManager.tankD.getHeight();
 
+    //private final constants properties
+    private static final int SPEED = 1;
+    private static final Random RANDOM = new Random();
+
+    //private properties
     private int x;
     private int y;
-    private boolean alive;
+    private boolean alive = true;
+    private Direction dir;
+    private boolean moving = true;
+    private TankFrame tf;
+    private Group group;
 
+    public Tank(int x, int y, Direction dir, TankFrame tf, Group group) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.tf = tf;
+        this.group = group;
+    }
+
+    //getters and setters
     public int getX() {
         return x;
     }
@@ -26,20 +47,15 @@ public class Tank {
         return y;
     }
 
-
-    private static final int SPEED = 5;
-    private Direction dir;
-    boolean moving = false;
-    private TankFrame tf;
-
-    public Tank(int x, int y, Direction dir, TankFrame tf) {
-        this.x = x;
-        this.y = y;
-        this.dir = dir;
-        this.tf = tf;
-        this.alive = true;
+    public Group getGroup() {
+        return group;
     }
 
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    //methods
     public void paint(Graphics g) {
         if (!alive) {
             tf.tanks.remove(this);
@@ -82,29 +98,30 @@ public class Tank {
             default:
                 break;
         }
+
+        if(RANDOM.nextInt(10) > 8) {
+            this.fire();
+        }
     }
 
     public void setDir(Direction dir) {
         this.dir = dir;
     }
 
-    public boolean isMoving() {
-        return moving;
-    }
-
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
-    //思考： 这里如何把frame的子弹传给tank对象？
     public void fire() {
         //计算子弹的初始位置
         int bx = x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int by = y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        this.tf.bullets.add(new Bullet(bx, by, dir, this.tf));
+        this.tf.bullets.add(new Bullet(bx, by, dir, this.tf, this.getGroup()));
     }
 
     public void die() {
         this.alive = false;
     }
+
+
 }
