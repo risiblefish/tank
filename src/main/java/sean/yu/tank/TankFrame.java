@@ -18,7 +18,8 @@ import static sean.yu.tank.Group.GOOD;
  **/
 public class TankFrame extends Frame {
 
-    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+//    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     Tank myTank;
     LinkedList<Bullet> bullets;
     LinkedList<Tank> tanks;
@@ -78,6 +79,7 @@ public class TankFrame extends Frame {
         g.setColor(Color.white);
         g.drawString(String.format("子弹数量: %s ", bullets.size()), 10, 60);
         g.drawString(String.format("敌人数量: %s ", tanks.size()), 10, 80);
+        g.drawString(String.format("爆炸数量: %s ", tanks.size()), 10, 100);
         g.setColor(c);
         //绘制主战坦克
         myTank.paint(g);
