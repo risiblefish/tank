@@ -113,6 +113,8 @@ public class Bullet {
         //判断2个矩形是否相交
         if (bulletRect.intersects(tankRect)) {
             this.die();
+            tf.explodesList.add(new Explode(tank.getX(), tank.getY(), tf));
+            Explode.playAudio();
             tank.die();
         }
     }

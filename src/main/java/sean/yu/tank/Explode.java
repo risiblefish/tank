@@ -20,6 +20,7 @@ public class Explode {
     private boolean alive = true;
     private int step = 0;
 
+
     public Explode(int x, int y, TankFrame tf) {
         this.x = x;
         this.y = y;
@@ -30,8 +31,12 @@ public class Explode {
     public void paint(Graphics g) {
         g.drawImage(ResourceManager.explodes[step++], x, y, null);
         if (step >= ResourceManager.explodes.length) {
-            step = 0;
+            tf.explodesList.remove(this);
         }
+    }
+
+    public static void playAudio() {
+        new Audio("audio/explode.wav").play();
     }
 
 }

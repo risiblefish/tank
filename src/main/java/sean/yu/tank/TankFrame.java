@@ -18,17 +18,17 @@ import static sean.yu.tank.Group.GOOD;
  **/
 public class TankFrame extends Frame {
 
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     Tank myTank;
     LinkedList<Bullet> bullets;
     LinkedList<Tank> tanks;
-    Explode e;
+    LinkedList<Explode> explodesList;
 
 
     public TankFrame() throws HeadlessException {
         bullets = new LinkedList();
         tanks = new LinkedList();
-        e = new Explode(100, 100, this);
+        explodesList = new LinkedList();
         myTank = new Tank(200, 400, Direction.DOWN, this, GOOD);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
@@ -100,7 +100,9 @@ public class TankFrame extends Frame {
         }
 
         //绘制爆炸
-        e.paint(g);
+        for (int i = 0; i < explodesList.size(); i++) {
+            explodesList.get(i).paint(g);
+        }
     }
 
     /**
