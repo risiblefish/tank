@@ -22,11 +22,13 @@ public class TankFrame extends Frame {
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     Tank myTank;
     LinkedList<Bullet> bullets;
+    LinkedList<Tank> tanks;
 
 
     public TankFrame() throws HeadlessException {
         bullets = new LinkedList();
-        myTank = new Tank(200, 200, Direction.DOWN, this);
+        tanks = new LinkedList();
+        myTank = new Tank(200, 400, Direction.DOWN, this);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         addKeyListener(new TankKeyListener());
@@ -69,8 +71,13 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
+
         for (int i = 0 ; i < bullets.size() ; i++) {
             bullets.get(i).paint(g);
+        }
+
+        for (int i = 0; i < tanks.size(); i++) {
+            tanks.get(i).paint(g);
         }
     }
 

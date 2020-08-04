@@ -8,10 +8,13 @@ package sean.yu.tank;
  **/
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        TankFrame tankFrame = new TankFrame();
-        while(true) {
+        TankFrame tf = new TankFrame();
+        for (int i = 0; i < 5; i++) {
+            tf.tanks.add(new Tank(50 + i * 80, 200, Direction.DOWN, tf));
+        }
+        while (true) {
             Thread.sleep(50);
-            tankFrame.repaint();
+            tf.repaint();
         }
     }
 }
