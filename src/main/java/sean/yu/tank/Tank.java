@@ -9,6 +9,8 @@ import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.BAD;
 import static sean.yu.tank.Group.GOOD;
 import static sean.yu.tank.ResourceManager.*;
+import static sean.yu.tank.TankFrame.GAME_HEIGHT;
+import static sean.yu.tank.TankFrame.GAME_WIDTH;
 
 /**
  * @program: tank
@@ -22,7 +24,7 @@ public class Tank {
     public static final int HEIGHT = goodTankD.getHeight();
 
     //private final constants properties
-    private static final int SPEED = 1;
+    private static final int SPEED = 5;
     private static final Random RANDOM = new Random();
     private static final int CHANGE_NUM = 8;
 
@@ -81,6 +83,23 @@ public class Tank {
                 break;
         }
         move();
+        boundsCheck();
+    }
+
+    //注意，-2是为了让边界稍微留出些许像素显得更美观一点
+    private void boundsCheck() {
+        if (this.x < 2) {
+            x = 2;
+        }
+        if (this.y < 28) {
+            y = 28;
+        }
+        if (this.x > GAME_WIDTH - Tank.WIDTH - 2) {
+            x = GAME_WIDTH - Tank.WIDTH - 2;
+        }
+        if (this.y > GAME_HEIGHT - Tank.HEIGHT - 2) {
+            y = GAME_HEIGHT - Tank.HEIGHT - 2;
+        }
     }
 
     private Image getTankImage(Tank tank, Direction dir) {
@@ -166,7 +185,7 @@ public class Tank {
             this.fire();
         }
 
-        if (RANDOM.nextInt(10000) > 9900) {
+        if (RANDOM.nextInt(1000) > 900) {
             //随机改变方向
             this.setDir(Direction.values()[RANDOM.nextInt(4)]);
         }
