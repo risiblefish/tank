@@ -1,8 +1,8 @@
 package sean.yu.tank;
 
 import java.awt.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import static sean.yu.tank.ResourceManager.playExplodeAudio;
 
 /**
  * @program: tank
@@ -22,14 +22,11 @@ public class Explode {
     private boolean alive = true;
     private int step = 0;
 
-    ExecutorService service = Executors.newSingleThreadExecutor();
-
-
     public Explode(int x, int y, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.tf = tf;
-        service.submit(Explode::playAudio);
+        playExplodeAudio();
     }
 
     //methods
@@ -40,8 +37,5 @@ public class Explode {
         }
     }
 
-    public static void playAudio() {
-        new Audio("audio/explode.wav").play();
-    }
 
 }

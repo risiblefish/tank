@@ -2,6 +2,12 @@ package sean.yu.tank;
 
 import java.awt.*;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static sean.yu.tank.Group.BAD;
+import static sean.yu.tank.Group.GOOD;
+import static sean.yu.tank.ResourceManager.*;
 
 /**
  * @program: tank
@@ -11,8 +17,8 @@ import java.util.Random;
  **/
 public class Tank {
     //public properties
-    public static final int WIDTH = ResourceManager.tankD.getWidth();
-    public static final int HEIGHT = ResourceManager.tankD.getHeight();
+    public static final int WIDTH = goodTankD.getWidth();
+    public static final int HEIGHT = goodTankD.getHeight();
 
     //private final constants properties
     private static final int SPEED = 1;
@@ -56,16 +62,16 @@ public class Tank {
         }
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceManager.tankL, x, y, null);
+                g.drawImage(this.group ==  GOOD? goodTankL : badTankL, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceManager.tankR, x, y, null);
+                g.drawImage(this.group ==  GOOD? goodTankR : badTankR, x, y, null);
                 break;
             case UP:
-                g.drawImage(ResourceManager.tankU, x, y, null);
+                g.drawImage(this.group ==  GOOD? goodTankU : badTankU, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceManager.tankD, x, y, null);
+                g.drawImage(this.group ==  GOOD? goodTankD : badTankD, x, y, null);
                 break;
         }
         move();
@@ -91,9 +97,20 @@ public class Tank {
             default:
                 break;
         }
+        if (this.group == BAD) {
+            performRobotAction();
+        }
+    }
 
-        if(RANDOM.nextInt(10) > 8 && this.group == Group.BAD) {
+    private void performRobotAction() {
+        //随机发射子弹
+        if (RANDOM.nextInt(100) > 95) {
             this.fire();
+        }
+
+        if (RANDOM.nextInt(10000) > 9900) {
+            //随机改变方向
+            this.setDir(Direction.values()[RANDOM.nextInt(4)]);
         }
     }
 

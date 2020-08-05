@@ -121,19 +121,15 @@ public class TankFrame extends Frame {
             int key = e.getKeyCode();
             switch (key) {
                 case KeyEvent.VK_LEFT:
-                    System.out.println("按下了left");
                     bL = true;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    System.out.println("按下了right");
                     bR = true;
                     break;
                 case KeyEvent.VK_UP:
-                    System.out.println("按下了up");
                     bU = true;
                     break;
                 case KeyEvent.VK_DOWN:
-                    System.out.println("按下了down");
                     bD = true;
                     break;
                 case KeyEvent.VK_CONTROL:
