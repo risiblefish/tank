@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.BAD;
 import static sean.yu.tank.Group.GOOD;
 import static sean.yu.tank.ResourceManager.*;
@@ -23,6 +24,7 @@ public class Tank {
     //private final constants properties
     private static final int SPEED = 1;
     private static final Random RANDOM = new Random();
+    private static final int CHANGE_NUM = 8;
 
     //private properties
     private int x;
@@ -32,6 +34,9 @@ public class Tank {
     private boolean moving = true;
     private TankFrame tf;
     private Group group;
+    //用于控制绘制坦克图片的替换，当达到CHANGE_NUM时，就替换成另一张，从而让坦克的灯"闪"起来
+    private int changeCount = 0;
+
 
     public Tank(int x, int y, Direction dir, TankFrame tf, Group group) {
         this.x = x;
@@ -60,21 +65,74 @@ public class Tank {
             tf.tanks.remove(this);
             return;
         }
+
         switch (dir) {
             case LEFT:
-                g.drawImage(this.group ==  GOOD? goodTankL : badTankL, x, y, null);
+                g.drawImage(getTankImage(this, LEFT), x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(this.group ==  GOOD? goodTankR : badTankR, x, y, null);
+                g.drawImage(getTankImage(this, RIGHT), x, y, null);
                 break;
             case UP:
-                g.drawImage(this.group ==  GOOD? goodTankU : badTankU, x, y, null);
+                g.drawImage(getTankImage(this, UP), x, y, null);
                 break;
             case DOWN:
-                g.drawImage(this.group ==  GOOD? goodTankD : badTankD, x, y, null);
+                g.drawImage(getTankImage(this, DOWN), x, y, null);
                 break;
         }
         move();
+    }
+
+    private Image getTankImage(Tank tank, Direction dir) {
+        Group group = tank.getGroup();
+        if (group == GOOD) {
+            switch (dir) {
+                case LEFT:
+                    return goodTankL;
+                case RIGHT:
+                    return goodTankR;
+                case UP:
+                    return goodTankU;
+                case DOWN:
+                    return goodTankD;
+            }
+        } else {
+            switch (dir) {
+                case LEFT:
+                    if (changeCount == CHANGE_NUM) {
+                        changeCount = 0;
+                        return badTankL2;
+                    } else {
+                        changeCount++;
+                        return badTankL;
+                    }
+                case RIGHT:
+                    if (changeCount == CHANGE_NUM) {
+                        changeCount = 0;
+                        return badTankR2;
+                    } else {
+                        changeCount++;
+                        return badTankR;
+                    }
+                case UP:
+                    if (changeCount == CHANGE_NUM) {
+                        changeCount = 0;
+                        return badTankU2;
+                    } else {
+                        changeCount++;
+                        return badTankU;
+                    }
+                case DOWN:
+                    if (changeCount == CHANGE_NUM) {
+                        changeCount = 0;
+                        return badTankD2;
+                    } else {
+                        changeCount++;
+                        return badTankD;
+                    }
+            }
+        }
+        return null;
     }
 
     private void move() {

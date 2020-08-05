@@ -17,9 +17,11 @@ import java.util.concurrent.Executors;
 public class ResourceManager {
     public static BufferedImage goodTankL, goodTankR, goodTankU, goodTankD;
     public static BufferedImage badTankL, badTankR, badTankU, badTankD;
+    public static BufferedImage badTankL2, badTankR2, badTankU2, badTankD2;
     public static BufferedImage bulletL, bulletR, bulletU, bulletD;
     public static BufferedImage[] explodes = new BufferedImage[16];
 
+    //用于播放音效的线程池
     private static final ExecutorService soundPool = Executors.newFixedThreadPool(20);
 
     static {
@@ -30,11 +32,16 @@ public class ResourceManager {
             goodTankR = ImageUtil.rotateImage(goodTankU, 90);
             goodTankD = ImageUtil.rotateImage(goodTankU, 180);
 
-            //加载敌军坦克图片
+            //加载敌军坦克图片(2组图片是为了让坦克灯"闪起来")
             badTankU = ImageIO.read(ResourceManager.class.getClassLoader().getResourceAsStream("images/BadTank1.png"));
             badTankL = ImageUtil.rotateImage(badTankU, -90);
             badTankR = ImageUtil.rotateImage(badTankU, 90);
             badTankD = ImageUtil.rotateImage(badTankU, 180);
+
+            badTankU2 = ImageIO.read(ResourceManager.class.getClassLoader().getResourceAsStream("images/BadTank2.png"));
+            badTankL2 = ImageUtil.rotateImage(badTankU2, -90);
+            badTankR2 = ImageUtil.rotateImage(badTankU2, 90);
+            badTankD2 = ImageUtil.rotateImage(badTankU2, 180);
 
             //加载子弹图片
             bulletU = ImageIO.read(ResourceManager.class.getClassLoader().getResourceAsStream("images/bulletU.png"));
@@ -51,6 +58,7 @@ public class ResourceManager {
         }
     }
 
+    //播放爆炸音效
     public static void playExplodeAudio() {
         soundPool.submit(() -> new Audio("audio/explode.wav").play());
     }
