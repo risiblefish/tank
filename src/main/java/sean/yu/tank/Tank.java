@@ -2,8 +2,6 @@ package sean.yu.tank;
 
 import java.awt.*;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.BAD;
@@ -38,7 +36,7 @@ public class Tank {
     private Group group;
     //用于控制绘制坦克图片的替换，当达到CHANGE_NUM时，就替换成另一张，从而让坦克的灯"闪"起来
     private int changeCount = 0;
-
+    private Rectangle rect = new Rectangle();
 
     public Tank(int x, int y, Direction dir, TankFrame tf, Group group) {
         this.x = x;
@@ -46,7 +44,12 @@ public class Tank {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = group == BAD ? badTankD.getWidth() : goodTankD.getWidth();
+        rect.height = group == BAD ? badTankD.getWidth() : badTankD.getHeight();
     }
+
 
     //getters and setters
     public int getX() {
@@ -59,6 +62,10 @@ public class Tank {
 
     public Group getGroup() {
         return group;
+    }
+
+    public Rectangle getRect() {
+        return rect;
     }
 
     //methods
@@ -83,7 +90,13 @@ public class Tank {
                 break;
         }
         move();
+        updateTankRect();
         boundsCheck();
+    }
+
+    private void updateTankRect(){
+        rect.x = this.x;
+        rect.y = this.y;
     }
 
     //注意，-2是为了让边界稍微留出些许像素显得更美观一点

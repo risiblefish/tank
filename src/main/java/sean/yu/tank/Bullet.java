@@ -28,6 +28,7 @@ public class Bullet {
     private TankFrame tf;
     private boolean alive = true;
     private Group group;
+    private Rectangle rect = new Rectangle();
 
     public Bullet(int x, int y, Direction dir, TankFrame tf, Group group) {
         this.x = x;
@@ -35,6 +36,10 @@ public class Bullet {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+        rect.x = x;
+        rect.y = y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     //getters and setters
@@ -87,9 +92,18 @@ public class Bullet {
             default:
                 break;
         }
+
+        //每次移动之后更新子弹矩形（用于碰撞检测）
+        updateBulletRect();
+
         if(isDead()) {
             tf.bullets.remove(this);
         }
+    }
+
+    private void updateBulletRect(){
+        rect.x = this.x;
+        rect.y = this.y;
     }
 
     private boolean isDead() {
@@ -108,17 +122,13 @@ public class Bullet {
         if(this.group == tank.getGroup()) {
             return;
         }
-        //TODO : 只用2个矩形来分别记录,而不是每次都new
-        Rectangle bulletRect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-        Rectangle tankRect = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         //判断2个矩形是否相交
-        if (bulletRect.intersects(tankRect)) {
+        if (this.rect.intersects(tank.getRect())) {
             this.die();
             tf.explodesList.add(new Explode(tank.getX(), tank.getY(), tf));
             tank.die();
         }
     }
-
     private void die() {
         this.alive = false;
     }
