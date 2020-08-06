@@ -90,8 +90,8 @@ public class Tank {
                 break;
         }
         move();
-        updateTankRect();
         boundsCheck();
+        updateTankRect();
     }
 
     private void updateTankRect(){
