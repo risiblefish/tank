@@ -9,8 +9,9 @@ import java.util.Properties;
  * @author: Unuts
  * @create: 2020-08-06 08:04
  **/
+public enum PropertyManager {
+    INSTANCE;
 
-public class PropertyManager {
     private static final Properties PROPS = new Properties();
 
     static {
@@ -23,9 +24,5 @@ public class PropertyManager {
 
     public static Object get(String key) {
         return key == null ? null : PROPS.get(key);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(PROPS.get("tankInitialCount"));
     }
 }

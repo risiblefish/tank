@@ -14,7 +14,8 @@ import java.util.concurrent.Executors;
  * @author: Unuts
  * @create: 2020-08-04 06:47
  **/
-public class ResourceManager {
+public enum ResourceManager {
+    INSTANCE;
     public static BufferedImage goodTankL, goodTankR, goodTankU, goodTankD;
     public static BufferedImage badTankL, badTankR, badTankU, badTankD;
     public static BufferedImage badTankL2, badTankR2, badTankU2, badTankD2;
@@ -61,9 +62,5 @@ public class ResourceManager {
     //播放爆炸音效
     public static void playExplodeAudio() {
         soundPool.submit(() -> new Audio("audio/explode.wav").play());
-    }
-
-    public static void main(String[] args) {
-        System.out.println();
     }
 }

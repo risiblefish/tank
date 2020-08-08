@@ -25,7 +25,6 @@ public class TankFrame extends Frame {
     LinkedList<Tank> tanks;
     LinkedList<Explode> explodesList;
 
-
     public TankFrame() throws HeadlessException {
         bullets = new LinkedList();
         tanks = new LinkedList();
