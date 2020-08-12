@@ -1,6 +1,8 @@
 package sean.yu.tank;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 import static sean.yu.tank.Direction.*;
@@ -37,8 +39,9 @@ public class Tank {
     //用于控制绘制坦克图片的替换，当达到CHANGE_NUM时，就替换成另一张，从而让坦克的灯"闪"起来
     private int changeCount = 0;
     private Rectangle rect = new Rectangle();
+    private FireStrategy fs;
 
-    public Tank(int x, int y, Direction dir, TankFrame tf, Group group) {
+    public Tank(int x, int y, Direction dir, TankFrame tf, Group group) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -48,6 +51,8 @@ public class Tank {
         rect.y = this.y;
         rect.width = group == BAD ? badTankD.getWidth() : goodTankD.getWidth();
         rect.height = group == BAD ? badTankD.getWidth() : badTankD.getHeight();
+        String stategyName = group == GOOD ? (String)PropertyManager.get("goodFireFS") : (String)PropertyManager.get("badFireFS");
+        fs = (FireStrategy) Class.forName(stategyName).getDeclaredConstructor().newInstance();
     }
 
 
@@ -66,6 +71,14 @@ public class Tank {
 
     public Rectangle getRect() {
         return rect;
+    }
+
+    public Direction getDir() {
+        return dir;
+    }
+
+    public TankFrame getTf() {
+        return tf;
     }
 
     //methods
@@ -213,10 +226,7 @@ public class Tank {
     }
 
     public void fire() {
-        //计算子弹的初始位置
-        int bx = x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
-        int by = y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        this.tf.bullets.add(new Bullet(bx, by, dir, this.tf, this.getGroup()));
+       fs.fire(this);
     }
 
     public void die() {

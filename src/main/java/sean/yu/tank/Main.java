@@ -1,5 +1,7 @@
 package sean.yu.tank;
 
+import java.lang.reflect.InvocationTargetException;
+
 import static sean.yu.tank.Group.BAD;
 
 /**
@@ -9,7 +11,7 @@ import static sean.yu.tank.Group.BAD;
  * @create: 2020-08-03 19:34
  **/
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         TankFrame tf = new TankFrame();
         Integer tankInitialCount = Integer.parseInt((String)PropertyManager.get("tankInitialCount"));
         for (int i = 0; i < tankInitialCount; i++) {

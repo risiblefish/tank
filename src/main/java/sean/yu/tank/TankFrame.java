@@ -5,6 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
 import static sean.yu.tank.Direction.*;
@@ -25,7 +26,7 @@ public class TankFrame extends Frame {
     LinkedList<Tank> tanks;
     LinkedList<Explode> explodesList;
 
-    public TankFrame() throws HeadlessException {
+    public TankFrame() throws HeadlessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         bullets = new LinkedList();
         tanks = new LinkedList();
         explodesList = new LinkedList();

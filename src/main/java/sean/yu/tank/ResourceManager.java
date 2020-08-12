@@ -63,4 +63,9 @@ public enum ResourceManager {
     public static void playExplodeAudio() {
         soundPool.submit(() -> new Audio("audio/explode.wav").play());
     }
+
+    //播放开火音效
+    public static void playFireAudio() {
+        soundPool.submit(() -> new Audio("audio/tank_fire.wav").play());
+    }
 }

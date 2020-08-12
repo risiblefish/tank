@@ -40,6 +40,7 @@ public class Bullet {
         rect.y = y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+        this.tf.bullets.add(this);
     }
 
     //getters and setters
