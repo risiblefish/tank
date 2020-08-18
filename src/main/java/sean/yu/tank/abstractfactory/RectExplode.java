@@ -1,6 +1,7 @@
-package sean.yu.tank;
+package sean.yu.tank.abstractfactory;
 
-import sean.yu.tank.abstractfactory.AbstractExplode;
+import sean.yu.tank.ResourceManager;
+import sean.yu.tank.TankFrame;
 
 import java.awt.*;
 
@@ -12,33 +13,28 @@ import static sean.yu.tank.ResourceManager.playExplodeAudio;
  * @author: Unuts
  * @create: 2020-08-03 21:25
  **/
-public class Explode extends AbstractExplode {
+public class RectExplode extends AbstractExplode {
     //public properties
     public static final int WIDTH = ResourceManager.explodes[0].getWidth();
     public static final int HEIGHT = ResourceManager.explodes[0].getHeight();
 
-    //private properties
-    private int x;
-    private int y;
-    private TankFrame tf;
-    private boolean alive = true;
-    private int step = 0;
-
-    public Explode(int x, int y, TankFrame tf) {
+    public RectExplode(int x, int y, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.tf = tf;
         playExplodeAudio();
     }
 
-    //methods
-
     @Override
     public void paint(Graphics g) {
-        g.drawImage(ResourceManager.explodes[step++], x, y, null);
-        if (step >= ResourceManager.explodes.length) {
+        Color c = g.getColor();
+        g.setColor(Color.RED);
+        g.fillRect(x, y, 10*step, 10*step);
+        step++;
+        if(step >= 15) {
             tf.explodesList.remove(this);
         }
+        g.setColor(c);
     }
 
 

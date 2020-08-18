@@ -1,5 +1,7 @@
 package sean.yu.tank;
 
+import sean.yu.tank.abstractfactory.AbstractTank;
+
 import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.GOOD;
 
@@ -11,15 +13,15 @@ import static sean.yu.tank.Group.GOOD;
  **/
 public class FourDirectionFireStrategy implements FireStrategy{
     @Override
-    public void fire(Tank t) {
+    public void fire(AbstractTank t) {
         //计算子弹的初始位置
-        int bx = t.getX() + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
-        int by = t.getY() + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        new Bullet(bx, by, UP, t.getTf(), t.getGroup());
-        new Bullet(bx, by, DOWN, t.getTf(), t.getGroup());
-        new Bullet(bx, by, LEFT, t.getTf(), t.getGroup());
-        new Bullet(bx, by, RIGHT, t.getTf(), t.getGroup());
-        if(t.getGroup() == GOOD) {
+        int bx = t.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int by = t.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
+        new Bullet(bx, by, UP, t.tf, t.group);
+        new Bullet(bx, by, DOWN, t.tf, t.group);
+        new Bullet(bx, by, LEFT, t.tf, t.group);
+        new Bullet(bx, by, RIGHT, t.tf, t.group);
+        if(t.group == GOOD) {
             ResourceManager.playFireAudio();
         }
     }

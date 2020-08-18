@@ -1,11 +1,12 @@
 package sean.yu.tank;
 
+import sean.yu.tank.abstractfactory.*;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
 import static sean.yu.tank.Direction.*;
@@ -20,13 +21,16 @@ import static sean.yu.tank.Group.GOOD;
 public class TankFrame extends Frame {
 
 //    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    Tank myTank;
-    LinkedList<Bullet> bullets;
-    LinkedList<Tank> tanks;
-    LinkedList<Explode> explodesList;
+    public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    AbstractTank myTank;
+    public LinkedList<AbstractBullet> bullets;
+    public LinkedList<AbstractTank> tanks;
+    public LinkedList<AbstractExplode> explodesList;
+//    public AbstractGameFactory gf = new DefaultFactory();
+    public AbstractGameFactory gf = new RectFactory();
 
-    public TankFrame() throws HeadlessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+    public TankFrame() {
         bullets = new LinkedList();
         tanks = new LinkedList();
         explodesList = new LinkedList();
@@ -169,20 +173,20 @@ public class TankFrame extends Frame {
 
         private void setMainTankDirection() {
             if (!bL && !bR && !bU && !bD) {
-                myTank.setMoving(false);
+                myTank.moving = false;
             } else {
-                myTank.setMoving(true);
+                myTank.moving = true;
                 if (bL) {
-                    myTank.setDir(LEFT);
+                    myTank.dir = LEFT;
                 }
                 if (bR) {
-                    myTank.setDir(RIGHT);
+                    myTank.dir = RIGHT;
                 }
                 if (bU) {
-                    myTank.setDir(UP);
+                    myTank.dir = UP;
                 }
                 if (bD) {
-                    myTank.setDir(DOWN);
+                    myTank.dir = DOWN;
                 }
             }
         }

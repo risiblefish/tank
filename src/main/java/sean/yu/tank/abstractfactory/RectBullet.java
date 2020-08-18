@@ -1,11 +1,13 @@
-package sean.yu.tank;
+package sean.yu.tank.abstractfactory;
 
-import sean.yu.tank.abstractfactory.AbstractBullet;
-import sean.yu.tank.abstractfactory.AbstractTank;
+import sean.yu.tank.Direction;
+import sean.yu.tank.Explode;
+import sean.yu.tank.Group;
+import sean.yu.tank.TankFrame;
 
 import java.awt.*;
 
-import static sean.yu.tank.ResourceManager.*;
+import static sean.yu.tank.ResourceManager.bulletD;
 import static sean.yu.tank.TankFrame.GAME_HEIGHT;
 import static sean.yu.tank.TankFrame.GAME_WIDTH;
 
@@ -16,7 +18,7 @@ import static sean.yu.tank.TankFrame.GAME_WIDTH;
  * @create: 2020-08-03 21:25
  **/
 
-public class Bullet extends AbstractBullet {
+public class RectBullet extends AbstractBullet {
     //public properties
     public static final int WIDTH = bulletD.getWidth();
     public static final int HEIGHT = bulletD.getHeight();
@@ -24,7 +26,7 @@ public class Bullet extends AbstractBullet {
     //private final constants properties
     private static final int SPEED = 10;
 
-    public Bullet(int x, int y, Direction dir, TankFrame tf, Group group) {
+    public RectBullet(int x, int y, Direction dir, TankFrame tf, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -46,20 +48,11 @@ public class Bullet extends AbstractBullet {
             tf.bullets.remove(this);
             return;
         }
-        switch (dir) {
-            case LEFT:
-                g.drawImage(bulletL, x, y, null);
-                break;
-            case RIGHT:
-                g.drawImage(bulletR, x, y, null);
-                break;
-            case UP:
-                g.drawImage(bulletU, x, y, null);
-                break;
-            case DOWN:
-                g.drawImage(bulletD, x, y, null);
-                break;
-        }
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.fillRect(x, y, 20, 20);
+        g.setColor(c);
+
         move();
     }
 
@@ -114,7 +107,7 @@ public class Bullet extends AbstractBullet {
         //判断2个矩形是否相交
         if (this.rect.intersects(tank.rect)) {
             this.die();
-            tf.explodesList.add(new Explode(tank.x, tank.y, tf));
+            tf.explodesList.add(new RectExplode(x,y,tf));
             tank.die();
         }
     }

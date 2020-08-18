@@ -1,5 +1,7 @@
 package sean.yu.tank;
 
+import sean.yu.tank.abstractfactory.AbstractTank;
+
 public interface FireStrategy {
-    void fire(Tank tank);
+    void fire(AbstractTank tank);
 }

@@ -1,11 +1,10 @@
-package sean.yu.tank;
+package sean.yu.tank.abstractfactory;
 
-import sean.yu.tank.abstractfactory.AbstractTank;
+import sean.yu.tank.*;
 
 import java.awt.*;
 import java.util.Random;
 
-import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.BAD;
 import static sean.yu.tank.Group.GOOD;
 import static sean.yu.tank.ResourceManager.*;
@@ -18,7 +17,7 @@ import static sean.yu.tank.TankFrame.GAME_WIDTH;
  * @author: Unuts
  * @create: 2020-08-03 20:49
  **/
-public class Tank extends AbstractTank {
+public class RectTank extends AbstractTank {
     //public properties
     public static final int WIDTH = goodTankD.getWidth();
     public static final int HEIGHT = goodTankD.getHeight();
@@ -28,9 +27,9 @@ public class Tank extends AbstractTank {
     private static final Random RANDOM = new Random();
     private static final int CHANGE_NUM = 8;
 
-    public Tank(int x, int y, Direction dir, TankFrame tf, Group group)  {
+    public RectTank(int x, int y, Direction dir, TankFrame tf, Group group) {
         this.x = x;
-        super.y = y;
+        this.y = y;
         this.dir = dir;
         this.tf = tf;
         this.group = group;
@@ -38,7 +37,7 @@ public class Tank extends AbstractTank {
         rect.y = this.y;
         rect.width = group == BAD ? badTankD.getWidth() : goodTankD.getWidth();
         rect.height = group == BAD ? badTankD.getWidth() : badTankD.getHeight();
-        String stategyName = group == GOOD ? (String)PropertyManager.get("goodFireFS") : (String)PropertyManager.get("badFireFS");
+        String stategyName = group == GOOD ? (String) PropertyManager.get("goodFireFS") : (String) PropertyManager.get("badFireFS");
         try {
             fs = (FireStrategy) Class.forName(stategyName).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
@@ -54,26 +53,17 @@ public class Tank extends AbstractTank {
             return;
         }
 
-        switch (dir) {
-            case LEFT:
-                g.drawImage(getTankImage(this, LEFT), x, y, null);
-                break;
-            case RIGHT:
-                g.drawImage(getTankImage(this, RIGHT), x, y, null);
-                break;
-            case UP:
-                g.drawImage(getTankImage(this, UP), x, y, null);
-                break;
-            case DOWN:
-                g.drawImage(getTankImage(this, DOWN), x, y, null);
-                break;
-        }
+        Color c = g.getColor();
+        g.setColor(group == Group.GOOD ? Color.RED : Color.BLUE);
+        g.fillRect(x, y, 40, 40);
+        g.setColor(c);
+
         move();
         boundsCheck();
         updateTankRect();
     }
 
-    private void updateTankRect(){
+    private void updateTankRect() {
         rect.x = this.x;
         rect.y = this.y;
     }
@@ -86,15 +76,15 @@ public class Tank extends AbstractTank {
         if (this.y < 28) {
             y = 28;
         }
-        if (this.x > GAME_WIDTH - Tank.WIDTH - 2) {
-            x = GAME_WIDTH - Tank.WIDTH - 2;
+        if (this.x > GAME_WIDTH - RectTank.WIDTH - 2) {
+            x = GAME_WIDTH - RectTank.WIDTH - 2;
         }
-        if (this.y > GAME_HEIGHT - Tank.HEIGHT - 2) {
-            y = GAME_HEIGHT - Tank.HEIGHT - 2;
+        if (this.y > GAME_HEIGHT - RectTank.HEIGHT - 2) {
+            y = GAME_HEIGHT - RectTank.HEIGHT - 2;
         }
     }
 
-    private Image getTankImage(Tank tank, Direction dir) {
+    private Image getTankImage(RectTank tank, Direction dir) {
         Group group = tank.group;
         if (group == GOOD) {
             switch (dir) {
@@ -183,11 +173,24 @@ public class Tank extends AbstractTank {
         }
     }
 
+
     @Override
     public void fire() {
-       fs.fire(this);
+        int bX = this.x + RectTank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int bY = this.y + RectTank.HEIGHT / 2 - Bullet.HEIGHT / 2;
+
+        Direction[] dirs = Direction.values();
+        for (Direction dir : dirs) {
+            tf.gf.createBullet(bX, bY, dir, tf, group);
+        }
+
+        if (group == Group.GOOD) {
+            new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+        }
+
     }
 
+    @Override
     public void die() {
         this.alive = false;
     }
