@@ -18,14 +18,14 @@ public class Explode {
     //private properties
     private int x;
     private int y;
-    private TankFrame tf;
+    private GameModel gm;
     private boolean alive = true;
     private int step = 0;
 
-    public Explode(int x, int y, TankFrame tf) {
+    public Explode(int x, int y, GameModel gm) {
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
         playExplodeAudio();
     }
 
@@ -33,7 +33,7 @@ public class Explode {
     public void paint(Graphics g) {
         g.drawImage(ResourceManager.explodes[step++], x, y, null);
         if (step >= ResourceManager.explodes.length) {
-            tf.explodesList.remove(this);
+            gm.explodesList.remove(this);
         }
     }
 

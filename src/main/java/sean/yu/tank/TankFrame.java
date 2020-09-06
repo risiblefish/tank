@@ -6,10 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
 
 import static sean.yu.tank.Direction.*;
-import static sean.yu.tank.Group.GOOD;
 
 /**
  * @program: tank
@@ -18,19 +16,11 @@ import static sean.yu.tank.Group.GOOD;
  * @create: 2020-08-03 19:18
  **/
 public class TankFrame extends Frame {
+    GameModel gm = new GameModel();
 
-//    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    Tank myTank;
-    LinkedList<Bullet> bullets;
-    LinkedList<Tank> tanks;
-    LinkedList<Explode> explodesList;
 
     public TankFrame() throws HeadlessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        bullets = new LinkedList();
-        tanks = new LinkedList();
-        explodesList = new LinkedList();
-        myTank = new Tank(200, 400, Direction.DOWN, this, GOOD);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         addKeyListener(new TankKeyListener());
@@ -74,37 +64,7 @@ public class TankFrame extends Frame {
     //绘制游戏实时画面
     @Override
     public void paint(Graphics g) {
-        //绘制游戏信息
-        Color c = g.getColor();
-        g.setColor(Color.white);
-        g.drawString(String.format("子弹数量: %s ", bullets.size()), 10, 60);
-        g.drawString(String.format("敌人数量: %s ", tanks.size()), 10, 80);
-        g.drawString(String.format("爆炸数量: %s ", tanks.size()), 10, 100);
-        g.setColor(c);
-        //绘制主战坦克
-        myTank.paint(g);
-
-        //绘制子弹
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).paint(g);
-        }
-
-        //绘制敌人
-        for (int i = 0; i < tanks.size(); i++) {
-            tanks.get(i).paint(g);
-        }
-
-        //每次绘制时对每颗子弹和坦克进行碰撞检测
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collideWith(tanks.get(j));
-            }
-        }
-
-        //绘制爆炸
-        for (int i = 0; i < explodesList.size(); i++) {
-            explodesList.get(i).paint(g);
-        }
+        gm.paint(g);
     }
 
     /**
@@ -133,7 +93,7 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    myTank.fire();
+                    gm.getMyTank().fire();
                     break;
                 default:
                     break;
@@ -146,19 +106,15 @@ public class TankFrame extends Frame {
             int key = e.getKeyCode();
             switch (key) {
                 case KeyEvent.VK_LEFT:
-                    System.out.println("释放了left");
                     bL = false;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    System.out.println("释放了right");
                     bR = false;
                     break;
                 case KeyEvent.VK_UP:
-                    System.out.println("释放了up");
                     bU = false;
                     break;
                 case KeyEvent.VK_DOWN:
-                    System.out.println("释放了down");
                     bD = false;
                     break;
                 default:
@@ -168,6 +124,7 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDirection() {
+            Tank myTank = gm.getMyTank();
             if (!bL && !bR && !bU && !bD) {
                 myTank.setMoving(false);
             } else {

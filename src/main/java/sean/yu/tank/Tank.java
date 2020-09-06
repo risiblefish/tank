@@ -1,7 +1,6 @@
 package sean.yu.tank;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
@@ -34,18 +33,18 @@ public class Tank {
     private boolean alive = true;
     private Direction dir;
     private boolean moving = true;
-    private TankFrame tf;
+    private GameModel gm;
     private Group group;
     //用于控制绘制坦克图片的替换，当达到CHANGE_NUM时，就替换成另一张，从而让坦克的灯"闪"起来
     private int changeCount = 0;
     private Rectangle rect = new Rectangle();
     private FireStrategy fs;
 
-    public Tank(int x, int y, Direction dir, TankFrame tf, Group group) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public Tank(int x, int y, Direction dir, GameModel gm, Group group) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
+        this.gm = gm;
         this.group = group;
         rect.x = this.x;
         rect.y = this.y;
@@ -54,7 +53,6 @@ public class Tank {
         String stategyName = group == GOOD ? (String)PropertyManager.get("goodFireFS") : (String)PropertyManager.get("badFireFS");
         fs = (FireStrategy) Class.forName(stategyName).getDeclaredConstructor().newInstance();
     }
-
 
     //getters and setters
     public int getX() {
@@ -77,14 +75,14 @@ public class Tank {
         return dir;
     }
 
-    public TankFrame getTf() {
-        return tf;
+    public GameModel getGm() {
+        return gm;
     }
 
     //methods
     public void paint(Graphics g) {
         if (!alive) {
-            tf.tanks.remove(this);
+            gm.tanks.remove(this);
             return;
         }
 

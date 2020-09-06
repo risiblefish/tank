@@ -15,7 +15,7 @@ public class DefaultFireStrategy implements FireStrategy {
         //计算子弹的初始位置
         int bx = t.getX() + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int by = t.getY() + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        new Bullet(bx, by, t.getDir(), t.getTf(), t.getGroup());
+        new Bullet(bx, by, t.getDir(), t.getGm(), t.getGroup());
         if (t.getGroup() == GOOD) {
             ResourceManager.playFireAudio();
         }

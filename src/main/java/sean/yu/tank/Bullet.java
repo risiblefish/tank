@@ -25,22 +25,22 @@ public class Bullet {
     private int x;
     private int y;
     private Direction dir;
-    private TankFrame tf;
+    private GameModel gm;
     private boolean alive = true;
     private Group group;
     private Rectangle rect = new Rectangle();
 
-    public Bullet(int x, int y, Direction dir, TankFrame tf, Group group) {
+    public Bullet(int x, int y, Direction dir, GameModel gm, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
+        this.gm = gm;
         this.group = group;
         rect.x = x;
         rect.y = y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
-        this.tf.bullets.add(this);
+        this.gm.bullets.add(this);
     }
 
     //getters and setters
@@ -56,7 +56,7 @@ public class Bullet {
     public void paint(Graphics g) {
         //如果死了，就不绘制
         if(isDead()) {
-            tf.bullets.remove(this);
+            gm.bullets.remove(this);
             return;
         }
         switch (dir) {
@@ -98,7 +98,7 @@ public class Bullet {
         updateBulletRect();
 
         if(isDead()) {
-            tf.bullets.remove(this);
+            gm.bullets.remove(this);
         }
     }
 
@@ -126,7 +126,7 @@ public class Bullet {
         //判断2个矩形是否相交
         if (this.rect.intersects(tank.getRect())) {
             this.die();
-            tf.explodesList.add(new Explode(tank.getX(), tank.getY(), tf));
+            gm.explodesList.add(new Explode(tank.getX(), tank.getY(), gm));
             tank.die();
         }
     }
