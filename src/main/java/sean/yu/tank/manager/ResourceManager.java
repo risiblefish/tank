@@ -1,4 +1,7 @@
-package sean.yu.tank;
+package sean.yu.tank.manager;
+
+import sean.yu.tank.util.AudioUtil;
+import sean.yu.tank.util.ImageUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -61,11 +64,11 @@ public enum ResourceManager {
 
     //播放爆炸音效
     public static void playExplodeAudio() {
-        soundPool.submit(() -> new Audio("audio/explode.wav").play());
+        soundPool.submit(() -> new AudioUtil("audio/explode.wav").play());
     }
 
     //播放开火音效
     public static void playFireAudio() {
-        soundPool.submit(() -> new Audio("audio/tank_fire.wav").play());
+        soundPool.submit(() -> new AudioUtil("audio/tank_fire.wav").play());
     }
 }

@@ -1,5 +1,8 @@
 package sean.yu.tank;
 
+import sean.yu.tank.manager.PropertyManager;
+import sean.yu.tank.strategy.FireStrategy;
+
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
@@ -7,9 +10,9 @@ import java.util.Random;
 import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.BAD;
 import static sean.yu.tank.Group.GOOD;
-import static sean.yu.tank.ResourceManager.*;
 import static sean.yu.tank.TankFrame.GAME_HEIGHT;
 import static sean.yu.tank.TankFrame.GAME_WIDTH;
+import static sean.yu.tank.manager.ResourceManager.*;
 
 /**
  * @program: tank
@@ -17,7 +20,7 @@ import static sean.yu.tank.TankFrame.GAME_WIDTH;
  * @author: Unuts
  * @create: 2020-08-03 20:49
  **/
-public class Tank {
+public class Tank extends GameObject {
     //public properties
     public static final int WIDTH = goodTankD.getWidth();
     public static final int HEIGHT = goodTankD.getHeight();
@@ -28,13 +31,11 @@ public class Tank {
     private static final int CHANGE_NUM = 8;
 
     //private properties
-    private int x;
-    private int y;
     private boolean alive = true;
     private Direction dir;
     private boolean moving = true;
-    private GameModel gm;
     private Group group;
+    private int oldX, oldY;
     //用于控制绘制坦克图片的替换，当达到CHANGE_NUM时，就替换成另一张，从而让坦克的灯"闪"起来
     private int changeCount = 0;
     private Rectangle rect = new Rectangle();
@@ -50,7 +51,7 @@ public class Tank {
         rect.y = this.y;
         rect.width = group == BAD ? badTankD.getWidth() : goodTankD.getWidth();
         rect.height = group == BAD ? badTankD.getWidth() : badTankD.getHeight();
-        String stategyName = group == GOOD ? (String)PropertyManager.get("goodFireFS") : (String)PropertyManager.get("badFireFS");
+        String stategyName = group == GOOD ? (String) PropertyManager.get("goodFireFS") : (String) PropertyManager.get("badFireFS");
         fs = (FireStrategy) Class.forName(stategyName).getDeclaredConstructor().newInstance();
     }
 
@@ -79,10 +80,23 @@ public class Tank {
         return gm;
     }
 
-    //methods
+    public int getOldX() {
+        return oldX;
+    }
+
+    public int getOldY() {
+        return oldY;
+    }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
     public void paint(Graphics g) {
         if (!alive) {
-            gm.tanks.remove(this);
+            gm.remove(this);
             return;
         }
 
@@ -105,7 +119,7 @@ public class Tank {
         updateTankRect();
     }
 
-    private void updateTankRect(){
+    private void updateTankRect() {
         rect.x = this.x;
         rect.y = this.y;
     }
@@ -179,6 +193,8 @@ public class Tank {
     }
 
     private void move() {
+        oldX = x;
+        oldY = y;
         if (!moving) {
             return;
         }
@@ -224,7 +240,7 @@ public class Tank {
     }
 
     public void fire() {
-       fs.fire(this);
+        fs.fire(this);
     }
 
     public void die() {

@@ -2,7 +2,7 @@ package sean.yu.tank;
 
 import java.awt.*;
 
-import static sean.yu.tank.ResourceManager.*;
+import static sean.yu.tank.manager.ResourceManager.*;
 import static sean.yu.tank.TankFrame.GAME_HEIGHT;
 import static sean.yu.tank.TankFrame.GAME_WIDTH;
 
@@ -13,7 +13,7 @@ import static sean.yu.tank.TankFrame.GAME_WIDTH;
  * @create: 2020-08-03 21:25
  **/
 
-public class Bullet {
+public class Bullet extends GameObject{
     //public properties
     public static final int WIDTH = bulletD.getWidth();
     public static final int HEIGHT = bulletD.getHeight();
@@ -22,10 +22,7 @@ public class Bullet {
     private static final int SPEED = 10;
 
     //private properties
-    private int x;
-    private int y;
     private Direction dir;
-    private GameModel gm;
     private boolean alive = true;
     private Group group;
     private Rectangle rect = new Rectangle();
@@ -40,7 +37,7 @@ public class Bullet {
         rect.y = y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
-        this.gm.bullets.add(this);
+        this.gm.add(this);
     }
 
     //getters and setters
@@ -52,11 +49,16 @@ public class Bullet {
         this.group = group;
     }
 
+    public Rectangle getRect(){
+        return rect;
+    }
+
     //methods
+    @Override
     public void paint(Graphics g) {
         //如果死了，就不绘制
         if(isDead()) {
-            gm.bullets.remove(this);
+            gm.remove(this);
             return;
         }
         switch (dir) {
@@ -98,7 +100,7 @@ public class Bullet {
         updateBulletRect();
 
         if(isDead()) {
-            gm.bullets.remove(this);
+            gm.remove(this);
         }
     }
 
@@ -126,11 +128,11 @@ public class Bullet {
         //判断2个矩形是否相交
         if (this.rect.intersects(tank.getRect())) {
             this.die();
-            gm.explodesList.add(new Explode(tank.getX(), tank.getY(), gm));
+            gm.add(new Explode(tank.getX(), tank.getY(), gm));
             tank.die();
         }
     }
-    private void die() {
+    public void die() {
         this.alive = false;
     }
 }

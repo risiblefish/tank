@@ -1,4 +1,8 @@
-package sean.yu.tank;
+package sean.yu.tank.strategy;
+
+import sean.yu.tank.Bullet;
+import sean.yu.tank.manager.ResourceManager;
+import sean.yu.tank.Tank;
 
 import static sean.yu.tank.Direction.*;
 import static sean.yu.tank.Group.GOOD;

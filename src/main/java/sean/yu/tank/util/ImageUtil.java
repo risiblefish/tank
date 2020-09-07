@@ -1,4 +1,4 @@
-package sean.yu.tank;
+package sean.yu.tank.util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

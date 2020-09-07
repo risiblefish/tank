@@ -5,7 +5,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 
 import static sean.yu.tank.Direction.*;
 
@@ -20,7 +19,7 @@ public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
-    public TankFrame() throws HeadlessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public TankFrame() throws Exception {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         addKeyListener(new TankKeyListener());

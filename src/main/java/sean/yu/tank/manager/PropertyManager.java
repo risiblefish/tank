@@ -1,4 +1,4 @@
-package sean.yu.tank;
+package sean.yu.tank.manager;
 
 import java.io.IOException;
 import java.util.Properties;
